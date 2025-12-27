@@ -7,7 +7,7 @@ function MenuItems({ name, desc, price, img }) {
 
   return (
     <div className="mt-20 group">
-      <div className="relative bg-[#222831] rounded-3xl w-[360px] h-[420px] overflow-hidden shadow-lg transition-all duration-500 hover:scale-[1.03] hover:shadow-2xl">
+      <div className="relative bg-[#222831] rounded-3xl w-[361px] h-[420px] overflow-hidden shadow-lg transition-all duration-500 hover:scale-[1.03] hover:shadow-2xl">
         
         <div className="bg-[#f1f2f3] h-[200px] flex items-center justify-center">
           <img
