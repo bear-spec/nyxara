@@ -1,22 +1,40 @@
-import { useState, useEffect } from 'react'
-import MenuItems from './MenuItems'
-import BelowItems from './BelowItems'
+import { useState, useEffect } from "react";
+import MenuItems from "./MenuItems";
+import BelowItems from "./BelowItems";
 
 function Menu() {
-  const [menuData, setMenuData] = useState([])
-  const [activeCategory, setActiveCategory] = useState('All')
+  const [menuData, setMenuData] = useState([]);
+  const [activeCategory, setActiveCategory] = useState("All");
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch('http://localhost:5000/api/cars')
-      .then(res => res.json())
-      .then(data => setMenuData(data))
-      .catch(err => console.error(err))
-  }, [])
+    fetch(`${import.meta.env.VITE_API_URL}/api/cars`)
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error("Failed to fetch cars");
+        }
+        return res.json();
+      })
+      .then((data) => {
+        setMenuData(data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error("Error fetching cars:", err);
+        setLoading(false);
+      });
+  }, []);
 
   const filteredMenu =
-    activeCategory === 'All'
+    activeCategory === "All"
       ? menuData
-      : menuData.filter(item => item.type === activeCategory)
+      : menuData.filter((item) => item.type === activeCategory);
+
+  if (loading) {
+    return (
+      <h2 className="text-center text-2xl mt-10">Loading cars...</h2>
+    );
+  }
 
   return (
     <>
@@ -28,12 +46,16 @@ function Menu() {
       </h1>
 
       <ul className="mt-10 flex justify-center gap-12 text-[18px] font-sans">
-        {['All', 'Sedan', 'Suv', 'Electric', 'Pickups'].map(type => (
+        {["All", "Sedan", "Suv", "Electric", "Pickups"].map((type) => (
           <li
             key={type}
             onClick={() => setActiveCategory(type)}
             className={`cursor-pointer w-[80px] h-8 pt-1 rounded-2xl flex justify-center items-center transition-all duration-500
-              ${activeCategory === type ? 'bg-[#222831] text-blue-50' : 'text-black'}`}
+              ${
+                activeCategory === type
+                  ? "bg-[#222831] text-blue-50"
+                  : "text-black"
+              }`}
           >
             {type}
           </li>
@@ -41,15 +63,20 @@ function Menu() {
       </ul>
 
       <div className="flex flex-wrap gap-8 justify-center">
-        {filteredMenu.map(item => (
-          <div key={item._id}>
-            <MenuItems
-              name={item.name}
-              desc={item.desc || item.description}
-              price={`₹${item.price || item.pricePerDay}`}
-              img={item.img ? item.img.replace('/images/', 'images/') : `images/${item.image}`}
-            />
-          </div>
+        {filteredMenu.map((item) => (
+          <MenuItems
+            key={item._id}
+            name={item.name}
+            desc={item.desc || item.description}
+            price={`₹${item.price || item.pricePerDay}`}
+            img={
+              item.img
+                ? item.img
+                : item.image
+                ? `images/${item.image}`
+                : ""
+            }
+          />
         ))}
       </div>
 
@@ -59,7 +86,7 @@ function Menu() {
         </button>
       </div>
     </>
-  )
+  );
 }
 
-export default Menu
+export default Menu;
