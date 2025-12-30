@@ -7,7 +7,6 @@ function Footer() {
     <div style={{ backgroundColor: '#222831' }} className="mt-30 w-full border border-black">
       <div className="text-white flex flex-col gap-10 sm:flex sm:flex-row justify-evenly mt-[80px]">
         
-        {/* Contact Info */}
         <div className="text-center">
           <h1 style={{ fontFamily: "'Dancing Script', cursive" }} className="pb-3 text-white text-3xl">
             Contact US
@@ -17,7 +16,6 @@ function Footer() {
           <p><FontAwesomeIcon icon={faEnvelope} /> nyxara@gmail.com</p>
         </div>
 
-        {/* About / Social Links */}
         <div className="text-center sm:w-[300px]">
           <h1 style={{ fontFamily: "'Dancing Script', cursive" }} className="pb-3 text-white text-4xl">
             Nyxara
@@ -29,7 +27,6 @@ function Footer() {
           </p>
 
           <div className="flex justify-center gap-4 mt-4 text-xl">
-            {/* Wrap FontAwesomeIcon in <a> if you want a link */}
             <a href="https://facebook.com" target="_blank" rel="noopener noreferrer">
               <FontAwesomeIcon icon={faFacebook} className="cursor-pointer hover:text-amber-400" />
             </a>
@@ -45,7 +42,6 @@ function Footer() {
           </div>
         </div>
 
-        {/* Opening Hours */}
         <div className="text-center">
           <h1 style={{ fontFamily: "'Dancing Script', cursive" }} className="pb-3 text-white text-3xl">
             Opening Hours
@@ -55,7 +51,6 @@ function Footer() {
         </div>
       </div>
 
-      {/* Footer Bottom */}
       <div style={{ backgroundColor: "#222831" }} className="text-white mt-[50px] mb-[50px] text-center text-sm">
         <p>© 2025 All Rights Reserved by Nyxara</p>
         <p>Designed & Distributed by Nyxara</p>

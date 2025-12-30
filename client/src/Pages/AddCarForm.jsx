@@ -1,5 +1,7 @@
 import { useState } from "react";
 
+const API_URL = "http://localhost:5000"; 
+
 function AddCarForm({ onSuccess }) {
   const [formData, setFormData] = useState({
     name: "",
@@ -12,10 +14,12 @@ function AddCarForm({ onSuccess }) {
   const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
+    const { name, value } = e.target;
+
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
   };
 
   const handleSubmit = async (e) => {
@@ -23,24 +27,25 @@ function AddCarForm({ onSuccess }) {
     setLoading(true);
 
     try {
-      const response = await fetch(
-        "https://nyxara.onrender.com/api/cars",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(formData),
-        }
-      );
+      const response = await fetch(`${API_URL}/api/cars`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          ...formData,
+          price: Number(formData.price), 
+        }),
+      });
 
       if (!response.ok) {
-        throw new Error("Failed to add car");
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Failed to add car");
       }
 
       await response.json();
 
-      alert("✅ Car added successfully!");
+      alert("Car added successfully!");
 
       setFormData({
         name: "",
@@ -52,8 +57,8 @@ function AddCarForm({ onSuccess }) {
 
       if (onSuccess) onSuccess();
     } catch (error) {
-      console.error("Error adding car:", error);
-      alert("❌ Failed to add car");
+      console.error("Error adding car:", error.message);
+      alert("Failed to add car");
     } finally {
       setLoading(false);
     }
@@ -65,6 +70,7 @@ function AddCarForm({ onSuccess }) {
       className="flex flex-col gap-4 max-w-md mx-auto p-4"
     >
       <input
+        type="text"
         name="name"
         placeholder="Car Name"
         value={formData.name}
@@ -73,14 +79,16 @@ function AddCarForm({ onSuccess }) {
       />
 
       <input
+        type="text"
         name="type"
-        placeholder="Car Type"
+        placeholder="Car Type (Sedan, SUV, etc.)"
         value={formData.type}
         onChange={handleChange}
         required
       />
 
       <input
+        type="number"
         name="price"
         placeholder="Price"
         value={formData.price}
@@ -89,6 +97,7 @@ function AddCarForm({ onSuccess }) {
       />
 
       <input
+        type="text"
         name="desc"
         placeholder="Description"
         value={formData.desc}
@@ -97,6 +106,7 @@ function AddCarForm({ onSuccess }) {
       />
 
       <input
+        type="text"
         name="img"
         placeholder="Image URL"
         value={formData.img}

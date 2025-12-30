@@ -2,27 +2,34 @@ import { useState, useEffect } from "react";
 import MenuItems from "./MenuItems";
 import BelowItems from "./BelowItems";
 
+const API_URL =
+  import.meta.env.VITE_API_URL || "http://localhost:5000";
+
 function Menu() {
   const [menuData, setMenuData] = useState([]);
   const [activeCategory, setActiveCategory] = useState("All");
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("https://nyxara.onrender.com/api/cars")
-      .then((res) => {
+    const fetchCars = async () => {
+      try {
+        setLoading(true);
+
+        const res = await fetch(`${API_URL}/api/cars`);
         if (!res.ok) {
           throw new Error("Failed to fetch cars");
         }
-        return res.json();
-      })
-      .then((data) => {
+
+        const data = await res.json();
         setMenuData(data);
+      } catch (err) {
+        console.error("Error fetching cars:", err.message);
+      } finally {
         setLoading(false);
-      })
-      .catch((err) => {
-        console.error("Error fetching cars:", err);
-        setLoading(false);
-      });
+      }
+    };
+
+    fetchCars();
   }, []);
 
   const filteredMenu =
@@ -32,7 +39,9 @@ function Menu() {
 
   if (loading) {
     return (
-      <h2 className="text-center text-2xl mt-10">Loading cars...</h2>
+      <h2 className="text-center text-2xl mt-10">
+        Loading cars...
+      </h2>
     );
   }
 
@@ -62,20 +71,14 @@ function Menu() {
         ))}
       </ul>
 
-      <div className="flex flex-wrap gap-8 justify-center">
+      <div className="flex flex-wrap gap-8 justify-center mt-10">
         {filteredMenu.map((item) => (
           <MenuItems
             key={item._id}
             name={item.name}
-            desc={item.desc || item.description}
-            price={`₹${item.price || item.pricePerDay}`}
-            img={
-              item.img
-                ? item.img
-                : item.image
-                ? `images/${item.image}`
-                : null
-            }
+            desc={item.desc}
+            price={`₹${item.price}`}
+            img={item.img}
           />
         ))}
       </div>
