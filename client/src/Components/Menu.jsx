@@ -2,10 +2,9 @@ import { useState, useEffect } from "react";
 import MenuItems from "./MenuItems";
 import BelowItems from "./BelowItems";
 
-const API_URL =
-  import.meta.env.VITE_API_URL || "http://localhost:5000";
+const API_URL = import.meta.env.VITE_API_URL;
 
-/*Fallback static data */
+/* Fallback static data */
 const LOCAL_CARS = [
   {
     name: "Luxury Sedan",
@@ -87,14 +86,15 @@ function Menu() {
   useEffect(() => {
     const fetchCars = async () => {
       try {
-        const res = await fetch(`${VITE_API_URL}/api/cars`);
-        if (!res.ok) throw new Error("Backend not available");
+        if (!API_URL) throw new Error("No backend URL");
+
+        const res = await fetch(`${API_URL}/api/cars`);
+        if (!res.ok) throw new Error("Backend unavailable");
 
         const data = await res.json();
         setMenuData(data);
-      } catch (err) {
-        console.warn("Using local car data");
-        setMenuData(LOCAL_CARS); 
+      } catch {
+        setMenuData(LOCAL_CARS); // fallback for build & offline
       } finally {
         setLoading(false);
       }
