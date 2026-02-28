@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import MenuItems from "./MenuItems";
-import BelowItems from "./BelowItems";
 
 const API_URL =
   import.meta.env.VITE_API_URL || "http://localhost:5000";
@@ -32,10 +31,7 @@ function Menu() {
     fetchCars();
   }, []);
 
-  const filteredMenu =
-    activeCategory === "All"
-      ? menuData
-      : menuData.filter((item) => item.type === activeCategory);
+  const filteredMenu = activeCategory === "All"? menuData: menuData.filter((item) => item.type === activeCategory);
 
   if (loading) {
     return (

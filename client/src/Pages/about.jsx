@@ -6,7 +6,7 @@ function About() {
     return (
         <>
             <Nav />
-            <Home_Underhead />
+            <BelowItems />
             <Footer />
         </>
     )
