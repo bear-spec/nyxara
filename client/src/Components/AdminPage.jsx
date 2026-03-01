@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import AddCarForm from "../Components/AddCarForm";
 
 const API_URL =
-  import.meta.env.VITE_API_URL ;
+  import.meta.env.VITE_API_URL;
 
 function AdminPage() {
   const [cars, setCars] = useState([]);
@@ -19,6 +19,7 @@ function AdminPage() {
       }
 
       const data = await response.json();
+      console.log("Cars received:", data.length);
       setCars(data);
     } catch (error) {
       console.error("Error fetching cars:", error.message);

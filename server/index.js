@@ -24,6 +24,10 @@ app.get("/", (req, res) => {
   res.send("Nyxara API running");
 });
 
+app.get("/health", (req, res) => {
+  res.status(200).json({ status: "OK" });
+});
+
 app.use("/api/cars", carRoutes);
 
 const PORT = process.env.PORT || 5000;
